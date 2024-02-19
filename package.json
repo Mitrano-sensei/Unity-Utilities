@@ -1,0 +1,19 @@
+{
+  "name": "com.mitrano.utilities",
+  "version": "1.0.0",
+  "displayName": "Utilities",
+  "description": "Contains every utilities scripts I often use",
+  "documentationUrl": "",
+  "changelogUrl": "",
+  "licensesUrl": "",
+  "keywords": [
+    "keyword1",
+    "keyword2",
+    "keyword3"
+  ],
+  "author": {
+    "name": "Elyas Tigre",
+    "email": "elyastigre@gmail.com",
+    "url": "https://github.com/Mitrano-sensei"
+  }
+}

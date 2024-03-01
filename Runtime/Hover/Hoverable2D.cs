@@ -17,8 +17,9 @@ namespace Utilities
 
         private float _hoverEnterTime;
 
-        public OnHoverEnter OnHoverEnter { get => _onHoverEnter; set => _onHoverEnter = value; }
-        public OnHoverExit OnHoverExit { get => _onHoverExit; set => _onHoverExit = value; }
+        public UnityAction<OnHoverEnterEvent> OnHoverEnter;
+        public UnityAction<OnHoverEvent> OnHover;
+        public UnityAction<OnHoverExitEvent> OnHoverExit;
 
         public bool IsHovered => _hoverState == HoverState.Hovered;
 
@@ -38,22 +39,48 @@ namespace Utilities
                         _hoverState = HoverState.HoverEnter;
                     break;
                 case HoverState.HoverEnter:
-                    _onHoverEnter.Invoke(new OnHoverEnterEvent());
-                    _hoverState = HoverState.Hovered;
-                    _hoverEnterTime = Time.time;
+                    HandleHoverEnter();
                     break;
                 case HoverState.Hovered:
-                    if (!CheckHover())
-                        _hoverState = HoverState.HoverExit;
+                    HandleHover();
                     break;
                 case HoverState.HoverExit:
-                    _onHoverExit.Invoke(new OnHoverExitEvent(_hoverEnterTime));
-                    _hoverState = HoverState.None;
+                    HandleHoverExit();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
 
             }
+        }
+
+        private void HandleHoverEnter()
+        {
+            // Call Events
+            var e = new OnHoverEnterEvent();
+            _onHoverEnter.Invoke(e);
+            OnHoverEnter?.Invoke(e);
+
+            // Change State
+            _hoverState = HoverState.Hovered;
+            _hoverEnterTime = Time.time;
+        }
+
+        private void HandleHover()
+        {
+            if (!CheckHover())
+                _hoverState = HoverState.HoverExit;
+
+            OnHover?.Invoke(new OnHoverEvent(_hoverEnterTime));
+        }
+
+        private void HandleHoverExit()
+        {
+            // Call Events
+            _onHoverExit.Invoke(new OnHoverExitEvent(_hoverEnterTime));
+            OnHoverExit?.Invoke(new OnHoverExitEvent(_hoverEnterTime));
+
+            // Change State
+            _hoverState = HoverState.None;
         }
 
         private bool CheckHover()
@@ -97,6 +124,16 @@ namespace Utilities
         {
             HoverExitTime = Time.time;
             HoverEnterTime = hoverEnterTime;
+        }
+    }
+
+    public class OnHoverEvent
+    {
+        public float StartTime;
+        public float HoverDuration => Time.time - StartTime;
+        public OnHoverEvent(float startTime)
+        {
+            StartTime = startTime;
         }
     }
 

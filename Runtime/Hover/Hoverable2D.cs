@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,7 +7,7 @@ namespace Utilities
     [RequireComponent(typeof(Collider2D))]
     public class Hoverable2D : MonoBehaviour
     {
-
+        [Header("Events")]
         [SerializeField] private OnHoverEnter _onHoverEnter = new();
         [SerializeField] private OnHoverExit _onHoverExit = new();
 

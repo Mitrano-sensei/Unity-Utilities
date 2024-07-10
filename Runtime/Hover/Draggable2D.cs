@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Utilities
 {
@@ -8,12 +9,13 @@ namespace Utilities
     public class Draggable2D : MonoBehaviour
     {
         [Header("Misc")] 
-        [SerializeField] private float dragDelay = 0.1f;
-        [SerializeField] private bool enableDragMove = true;
+        [SerializeField] private float isDragAfterInSeconds = 0.1f;
+        [SerializeField] private bool enableDragMove = true; // Enable or disable base movement on drag
 
         [Header("Events")] 
         [SerializeField] private OnDragStart onDragStart = new();
         [SerializeField] private OnDragEnd onDragEnd = new();
+        [SerializeField] private OnDrag onDrag = new();
         [SerializeField] private UnityEvent onClick = new();
 
         private Camera _camera;
@@ -25,6 +27,7 @@ namespace Utilities
 
         public UnityAction<OnDragStartEvent> OnDragStart;
         public UnityAction<OnDragEndEvent> OnDragEnd;
+        public UnityAction<OnDragEvent> OnDrag;
         public UnityAction OnClick;
 
         public bool IsDragging { get; private set; }
@@ -39,13 +42,18 @@ namespace Utilities
         {
             IsDragging = false;
             _camera = Camera.main;
+            
+            OnDrag += e => onDrag.Invoke(e);
+            OnDragStart += e => onDragStart.Invoke(e);
+            OnDragEnd += e => onDragEnd.Invoke(e);
         }
 
         public void Update()
         {
             var time = Time.time - _dragEnterTime;
 
-            if (!enableDragMove || !IsDragging || !(time > dragDelay)) return; // Here we don't want to move the object
+            OnDrag?.Invoke(new OnDragEvent(_initialPosition, _dragEnterTime, _offset));
+            if (!enableDragMove || !IsDragging || !(time > isDragAfterInSeconds)) return; // Here we don't want to move the object
 
             Vector3 mousePos = _camera.ScreenToWorldPoint(Input.mousePosition);
             transform.position = new Vector3(mousePos.x + _offset.x, mousePos.y + _offset.y, transform.position.z);
@@ -62,7 +70,6 @@ namespace Utilities
 
                 var e = new OnDragStartEvent(_initialPosition, _dragEnterTime);
                 OnDragStart?.Invoke(e);
-                onDragStart.Invoke(e);
             }
 
             IsDragging = true;
@@ -74,11 +81,10 @@ namespace Utilities
             {
                 var e = new OnDragEndEvent(_initialPosition, _dragEnterTime, Time.time);
 
-                onDragEnd.Invoke(e);
                 OnDragEnd?.Invoke(e);
 
                 var time = Time.time - _dragEnterTime;
-                if (time < dragDelay)
+                if (time < isDragAfterInSeconds)
                 {
                     OnClick?.Invoke();
                     onClick.Invoke();
@@ -88,9 +94,25 @@ namespace Utilities
             IsDragging = false;
         }
     }
+    
 
-    #region Events*
+    #region Events
 
+    
+    public class OnDragEvent
+    {
+        public Vector3 Offset { get; set; }
+        public float DragEnterTime { get; set; }
+        public Vector3 InitialPosition { get; set; }
+        
+        public OnDragEvent(Vector3 initialPosition, float dragEnterTime, Vector3 offset)
+        {
+            this.InitialPosition = initialPosition;
+            this.DragEnterTime = dragEnterTime;
+            this.Offset = offset;
+        }
+    }
+    
     public class OnDragEndEvent
     {
         public Vector3 InitialPosition { get; }
@@ -124,6 +146,10 @@ namespace Utilities
 
     [Serializable]
     public class OnDragStart : UnityEvent<OnDragStartEvent>
+    {
+    }
+    
+    public class OnDrag : UnityEvent<OnDragEvent>
     {
     }
 

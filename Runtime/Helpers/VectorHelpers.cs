@@ -6,7 +6,6 @@ namespace Utilities
 {
     public static class VectorHelpers
     {
-
         #region Vector3
 
         #region With
@@ -52,6 +51,58 @@ namespace Utilities
         {
             return new Vector3(vector.x, vector.y, vector.z + z);
         }
+        #endregion
+
+        #endregion
+
+        #region Vector3Int
+
+        #region With
+
+        public static Vector3Int With(this Vector3Int vector, int? x = null, int? y = null, int? z = null)
+        {
+            return new Vector3Int(x ?? vector.x, y ?? vector.y, z ?? vector.z);
+        }
+        
+        public static Vector3Int WithX(this Vector3Int vector, int x)
+        {
+            return new Vector3Int(x, vector.y, vector.z);
+        }
+        
+        public static Vector3Int WithY(this Vector3Int vector, int y)
+        {
+            return new Vector3Int(vector.x, y, vector.z);
+        }
+        
+        public static Vector3Int WithZ(this Vector3Int vector, int z)
+        {
+            return new Vector3Int(vector.x, vector.y, z);
+        }
+
+        #endregion
+        
+        #region Add
+        
+        public static Vector3Int Add(this Vector3Int vector, int? x = null, int? y = null, int? z = null)
+        {
+            return new Vector3Int(vector.x + (x ?? 0), vector.y + (y ?? 0), vector.z + (z ?? 0));
+        }
+        
+        public static Vector3Int AddX(this Vector3Int vector, int x)
+        {
+            return new Vector3Int(vector.x + x, vector.y, vector.z);
+        }
+        
+        public static Vector3Int AddY(this Vector3Int vector, int y)
+        {
+            return new Vector3Int(vector.x, vector.y + y, vector.z);
+        }
+        
+        public static Vector3Int AddZ(this Vector3Int vector, int z)
+        {
+            return new Vector3Int(vector.x, vector.y, vector.z + z);
+        }
+        
         #endregion
 
         #endregion

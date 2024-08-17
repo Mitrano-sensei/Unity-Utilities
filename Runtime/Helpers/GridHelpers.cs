@@ -14,15 +14,15 @@ namespace Utilities
             return grid.CellToWorld(cellPosition);
         }
         
-        public static Vector3Int GetCellFromMousePosition(Grid grid)
+        public static Vector3Int MousePositionToCell(Grid grid)
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             return WorldToCell(mousePosition, grid);
         }
         
-        public static Vector3 GetWorldFromMousePosition(Grid grid)
+        public static Vector3 MouseCellToWorld(Grid grid)
         {
-            Vector3Int cellPosition = GetCellFromMousePosition(grid);
+            Vector3Int cellPosition = MousePositionToCell(grid);
             return CellToWorld(cellPosition, grid);
         }
         

@@ -40,6 +40,7 @@ namespace Utilities
 
         }
 
+        public float GetTime() => Time;
         public void Resume() => IsRunning = true;
         public void Pause() => IsRunning = false;
 

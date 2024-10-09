@@ -40,7 +40,8 @@ namespace Utilities
 
         }
 
-        public float GetTime() => Time;
+        public float GetCurrentTime() => Time;
+        public float GetInitialTime() => _initialTime;
         public void Resume() => IsRunning = true;
         public void Pause() => IsRunning = false;
 

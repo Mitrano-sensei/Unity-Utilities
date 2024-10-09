@@ -5,7 +5,7 @@ using UnityEngine.Events;
 namespace Utilities
 {
     [RequireComponent(typeof(Collider2D))]
-    public class Hoverable2D : MonoBehaviour
+    public partial class Hoverable2D : MonoBehaviour
     {
         [Header("Events")]
         [SerializeField] private OnHoverEnter _onHoverEnter = new();
@@ -87,53 +87,5 @@ namespace Utilities
 
             return hit.collider != null && hit.transform == transform;
         }
-
-        public enum HoverState
-        {
-            None,
-            HoverEnter,
-            Hovered,
-            HoverExit
-        }
     }
-
-    #region Events
-
-    [Serializable] public class OnHoverEnter : UnityEvent<OnHoverEnterEvent> { }
-    [Serializable] public class OnHoverExit : UnityEvent<OnHoverExitEvent> { }
-
-    public class OnHoverEnterEvent
-    {
-        public float HoverEnterTime;
-        public OnHoverEnterEvent()
-        {
-            HoverEnterTime = Time.time;
-        }
-    }
-
-    public class OnHoverExitEvent
-    {
-        public float HoverExitTime;
-        public float HoverEnterTime;
-
-        public float HoverTime => HoverExitTime - HoverEnterTime;
-
-        public OnHoverExitEvent(float hoverEnterTime)
-        {
-            HoverExitTime = Time.time;
-            HoverEnterTime = hoverEnterTime;
-        }
-    }
-
-    public class OnHoverEvent
-    {
-        public float StartTime;
-        public float HoverDuration => Time.time - StartTime;
-        public OnHoverEvent(float startTime)
-        {
-            StartTime = startTime;
-        }
-    }
-
-    #endregion
 }

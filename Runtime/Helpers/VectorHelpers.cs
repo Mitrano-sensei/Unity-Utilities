@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace Utilities
@@ -149,6 +150,11 @@ namespace Utilities
             return Vector3.MoveTowards(currentVector, targetVector, speed * deltaTime);
         }
         #endregion
+        
+        public static Vector3 ClampMagnitude(this Vector3 v, float maxLength)
+        {
+            return (v.magnitude > maxLength) ? v.normalized * maxLength : v;
+        }
 
         #endregion
 
@@ -242,6 +248,11 @@ namespace Utilities
         }
 
         #endregion
+
+        public static Vector2 ClampMagnitude(this Vector2 v, float maxLength)
+        {
+            return (v.magnitude > maxLength) ? v.normalized * maxLength : v;
+        }
 
         #endregion
     }

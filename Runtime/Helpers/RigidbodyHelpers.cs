@@ -18,7 +18,7 @@ namespace Utilities
 
         public static void ApplyVerticalVelocity(this Rigidbody rigidbody, float newVerticalVelocity)
         {
-            rigidbody.ApplyVelocity(Vector3.up * newVerticalVelocity);
+            rigidbody.ApplyVelocity(rigidbody.velocity.WithY(newVerticalVelocity));
         }
 
         #endregion

@@ -19,5 +19,11 @@ namespace Utilities
 
             yield return action;
         }
+        
+        public static IEnumerator AtEndOfFrame(System.Action action)
+        {
+            yield return new WaitForEndOfFrame();
+            action();
+        }
     }
 }

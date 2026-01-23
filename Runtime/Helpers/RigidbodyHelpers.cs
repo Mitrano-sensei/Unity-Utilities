@@ -8,7 +8,7 @@ namespace Utilities
 
         public static void ApplyVelocity(this Rigidbody rigidbody, Vector3 desiredVelocity)
         {
-            rigidbody.AddForce(desiredVelocity - rigidbody.velocity, ForceMode.VelocityChange);
+            rigidbody.AddForce(desiredVelocity - rigidbody.linearVelocity, ForceMode.VelocityChange);
         }
 
         public static void RemoveVerticalVelocity(this Rigidbody rigidbody)
@@ -18,7 +18,7 @@ namespace Utilities
 
         public static void ApplyVerticalVelocity(this Rigidbody rigidbody, float newVerticalVelocity)
         {
-            rigidbody.ApplyVelocity(rigidbody.velocity.WithY(newVerticalVelocity));
+            rigidbody.ApplyVelocity(rigidbody.linearVelocity.WithY(newVerticalVelocity));
         }
 
         #endregion

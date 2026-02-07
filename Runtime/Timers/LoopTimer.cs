@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Utilities
+{
+    public class LoopTimer : Timer
+    {
+        private float _loopTime;
+        public Action OnLoop;
+        public Action OnLoopDenied;
+        public List<Func<bool>> LoopCondition = new(); 
+        
+        public float Percent => Time / _loopTime;
+        
+        public LoopTimer(float time) : base(0f)
+        {
+            _loopTime = time;
+        }
+
+        public override void Tick(float deltaTime)
+        {
+            if (!IsRunning) return;
+            
+            Time += deltaTime;
+            if (Time < _loopTime) return;
+            if (!IsLoopPossible)
+            {
+                OnLoopDenied?.Invoke();
+                return;
+            }
+            
+            Time -= _loopTime;
+            OnLoop?.Invoke();
+        }
+
+        public override void Start()
+        {
+            Time = 0f;
+            if (!IsRunning)
+            {
+                IsRunning = true;
+                OnTimerStart();
+            }
+        }
+        
+        public bool IsLoopPossible => LoopCondition == null || LoopCondition.Count == 0 || LoopCondition.TrueForAll(c => c()); 
+    }
+}

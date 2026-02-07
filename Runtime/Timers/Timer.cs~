@@ -17,7 +17,7 @@ namespace Utilities
             IsRunning = false;
         }
 
-        public virtual void Start()
+        public void Start()
         {
             Time = _initialTime;
             if (!IsRunning)
@@ -27,7 +27,7 @@ namespace Utilities
             }
         }
 
-        public virtual void Stop()
+        public void Stop()
         {
             if (IsRunning)
             {

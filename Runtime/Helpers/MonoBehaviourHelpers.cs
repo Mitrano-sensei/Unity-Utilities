@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using Component = System.ComponentModel.Component;
 
 namespace Utilities
 {
@@ -53,6 +52,14 @@ namespace Utilities
             var component = monoBehaviour.GetComponentInChildren<T>();
             if (component == null)
                 throw new Exception("Component not found on " + monoBehaviour.name + " children");
+            return component;
+        }
+        
+        public static T GetOrAddComponent<T>(this MonoBehaviour monoBehaviour) where T : Component
+        {
+            var component = monoBehaviour.GetComponent<T>();
+            if (component == null)
+                component = monoBehaviour.gameObject.AddComponent<T>();
             return component;
         }
         

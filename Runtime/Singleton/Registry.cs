@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Utilities
 {
@@ -28,5 +29,15 @@ namespace Utilities
 
         public static IEnumerable<T> All => items;
 
+        public static void RegisterSingletonOrLogError(T item) 
+        {
+            if (Registry<T>.All.Any())
+            {
+                Debug.LogError($"There is already a singleton of type {item.GetType()} in the scene, only one is allowed at a time");
+                return;
+            }
+        
+            Registry<T>.TryAdd(item);
+        }
     }
 }

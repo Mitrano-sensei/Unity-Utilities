@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Utilities
 {
@@ -26,7 +27,17 @@ namespace Utilities
 
         public static T Get(SelectionStrategy<T> strategy) => strategy(items);
 
-        public static IEnumerable<T> GetAll => items;
+        public static IEnumerable<T> All => items;
 
+        public static void RegisterSingletonOrLogError(T item) 
+        {
+            if (Registry<T>.All.Any())
+            {
+                Debug.LogError("There is already a money system in the scene, only one is allowed at a time");
+                return;
+            }
+        
+            Registry<T>.TryAdd(item);
+        }
     }
 }

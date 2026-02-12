@@ -24,7 +24,11 @@ namespace Utilities
             
             Time += deltaTime;
             if (Time < _loopTime) return;
-            if (!IsLoopPossible) return;
+            if (!IsLoopPossible)
+            {
+                OnLoopDenied?.Invoke();
+                return;
+            }
             
             Time -= _loopTime;
             OnLoop?.Invoke();
@@ -38,6 +42,12 @@ namespace Utilities
                 IsRunning = true;
                 OnTimerStart();
             }
+        }
+
+        public void Start(float newTime)
+        {
+            _loopTime = newTime;
+            Start();
         }
         
         public bool IsLoopPossible => LoopCondition == null || LoopCondition.Count == 0 || LoopCondition.TrueForAll(c => c()); 

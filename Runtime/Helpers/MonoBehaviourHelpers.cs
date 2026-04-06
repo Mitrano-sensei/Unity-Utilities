@@ -63,6 +63,14 @@ namespace Utilities
             return component;
         }
         
+        public static T GetOrAddComponent<T>(this GameObject monoBehaviour) where T : Component
+        {
+            var component = monoBehaviour.GetComponent<T>();
+            if (component == null)
+                component = monoBehaviour.gameObject.AddComponent<T>();
+            return component;
+        }
+        
         #endregion
     }
 }

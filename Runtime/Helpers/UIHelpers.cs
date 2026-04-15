@@ -32,7 +32,12 @@ namespace Utilities
         /// For example:
         /// If one RectTransform (A) is anchored leftside of the canvas with x = 0, and the other RectTransform (B) is anchored rightside of the canvas with x = 0,
         /// and the canvas is 100 wide; GetRelativeAnchorPoint(A, B) will be Vector2(-100, 0), corresponding to A's coordinate in B's system.
+        ///
+        /// This method works for WorldSpace & ScreenSpace. I don't know for CameraSpace
         /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         public static Vector2 GetRelativeAnchorPoint(RectTransform from, RectTransform to)
         {
             Vector2 fromPivotDerivedOffset = new Vector2(from.rect.width * from.pivot.x + from.rect.xMin, from.rect.height * from.pivot.y + from.rect.yMin);
